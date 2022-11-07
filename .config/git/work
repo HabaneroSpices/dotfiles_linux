@@ -1,0 +1,8 @@
+[include]
+	path = ~/.config/git/common
+
+[user]
+	email = mmch@netcompany.com
+
+#[url "git@github.com:Maersk-Global"]
+#	insteadOf = https://github.com/Maersk-Global
