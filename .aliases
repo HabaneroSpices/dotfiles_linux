@@ -26,5 +26,12 @@ alias e="$EDITOR"
 [[ ! -z $ZSH_NAME ]] && alias src='source $HOME/.zshrc'
 [[ ! -z $BASH ]] && alias src='source $HOME/.bashrc'
 
-function start () { nohup "$@" > /dev/null 2>&1 & disown }
+start () { nohup "$@" > /dev/null 2>&1 & disown }
 p () { ping "${1:-1.1.1.1}" }
+
+# Password generator
+genpass () {
+    local l=$1
+    [[ "$1" == "" ]] && l=16
+    tr -dc A-Za-z0-9_ < /dev/urandom | head -c ${l} | xargs
+}

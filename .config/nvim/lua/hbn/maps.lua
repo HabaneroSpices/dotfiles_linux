@@ -9,7 +9,8 @@ end
 map("i", "<C-E>", "<ESC>A") -- Ctrl+e goes to end of line (Insertmode)
 map("i", "<C-A>", "<ESC>I") -- Ctrl+a goes to start of line (Insertmode)
 
-map("n", "Q", ":quit<CR>")  -- Q tries to quit the buffer
+map("n", "q", ":quit<CR>")  -- q tries to quit the buffer
+map("n", "Q", ":quit!") -- Q quits the buffer forcefully
 map("n", "<CR>", ":write<CR>") -- Enter/return saves the buffer
 
 -- Load recent sessions
