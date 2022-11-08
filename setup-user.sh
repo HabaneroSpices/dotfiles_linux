@@ -1,16 +1,9 @@
 #!/bin/bash
 
-echo -e "\n### Setup fancy terminal"
-read -p "Install zsh oh-my-zsh p10k? [Y/n]: " choice
-choice=${choice:-Y}
-if [[ $choice = [Yy] ]]; then
-  clear
-  ./setup-p10k
-fi
 
 set -e
 # Color StdErr
-exec 2> >(while read line; do echo -e "\e[01;31m$line\e[0m"; done)
+#exec 2> >(while read line; do echo -e "\e[01;31m$line\e[0m"; done)
 
 # Make sure we're in the correct directory
 dotfiles_dir="$(
@@ -64,3 +57,10 @@ link ".config/nvim/after/plugin/which-key.rc.lua"
 echo "Configure repo-local git settings"
 git config user.email "habanerospices@gmail.com"
 git remote set-url origin "git@github.com:habanerospices/dotfiles.git"
+
+echo -e "\n### Setup fancy terminal"
+read -p "[i] Install zsh oh-my-zsh p10k? [Y/n]: " choice
+choice=${choice:-Y}
+if [[ $choice = [Yy] ]]; then
+  bash -c ./setup-p10k.sh
+fi
