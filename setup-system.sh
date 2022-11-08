@@ -2,8 +2,6 @@
 #
 
 set -e
-# Color StdErr
-#exec 2> >(while read line; do echo -e "\e[01;31m$line\e[0m"; done)
 
 # Make sure we're in the correct directory
 dotfiles_dir="$(
@@ -16,7 +14,7 @@ OS=$(uname)
 DISTRO=$(lsb_release -i | cut -f 2-)
 UPTODATE=0
 
-REQUIRED_PKG=("ripgrep" "fd-find" "git" "curl" "neovim" "wget" "zip" "unzip" "tar" "htop" "sshpass" "python3" "python3-pip" "neofetch" "ssh")
+REQUIRED_PKG=("ripgrep" "fd-find" "git" "curl" "neovim" "wget" "zip" "unzip" "tar" "htop" "sshpass" "python3" "python3-pip" "neofetch" "ssh" "tree")
 MISSING_PKG=()
 
 color () {
