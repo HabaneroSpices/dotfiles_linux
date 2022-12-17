@@ -5,6 +5,7 @@ command -v python3  &> /dev/null && alias py3='python3'
 command -v tput     &> /dev/null && alias cl='tput reset'
 command -v nvim     &> /dev/null && alias vim='nvim'
 command -v tree     &> /dev/null && alias tree='tree -a -I .git --dirsfirst'
+command -v wsl.exe  &> /dev/null && alias Ex='explorer.exe'
 if [ -x "$(command -v exa)" ]; then
     alias ls="exa --group --git --group-directories-first"
     alias la="exa --long --all --group"
@@ -20,6 +21,7 @@ alias sudo='sudo -E '
 alias rm!='\rm -rf'
 alias mkdir='mkdir -p'
 alias cp='cp -r --reflink=auto'
+alias mv='mv'
 alias aliases='source $HOME/.aliases'
 alias e="$EDITOR"
 
