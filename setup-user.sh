@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 set -e
 # Color StdErr
 #exec 2> >(while read line; do echo -e "\e[01;31m$line\e[0m"; done)
@@ -28,6 +27,7 @@ link() {
     echo "$dest_file -> $orig_file"
 }
 
+[[ "$EUID" -eq 0 ]] && echo "Running as root or with sudo privledges." && exit 1
 
 echo "==========================="
 echo "Setting up user dotfiles..."
