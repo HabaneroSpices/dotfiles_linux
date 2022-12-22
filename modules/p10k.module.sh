@@ -3,7 +3,7 @@
 # Requirements: ZSH OMZ P10K EXA FZF GIT CURL NEOVIM
 VERSION=0.2.0
 BASE_NAME=`basename ${0}`
-REQUIRED_PKG=("zsh" "exa" "fzf" "git" "curl" "neovim")
+REQUIRED_PKG=("zsh" "exa" "fzf" "git" "curl")
 MISSING_PKG=()
 LAST_LOG_MSG=
 UPTODATE=0
@@ -105,19 +105,7 @@ git clone https://github.com/joshskidmore/zsh-fzf-history-search ${ZSH_CUSTOM:=~
     (( UPTODATE++ ))
 fi
 
-#
-# - Preset -
-#
-
 # If nothing was installed during execution exit 0
 if (( $UPTODATE == 0 ));then 
   success "Installation is up to date. Nothing to do - Exiting."
-  exit 2
 fi
-
-success "Installed da ting, u no"
-
-command zsh
-
-exit 0
-

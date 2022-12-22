@@ -11,62 +11,43 @@ dotfiles_dir="$(
 cd "$dotfiles_dir"
 
 OS=$(uname)
-DISTRO=$(lsb_release -i | cut -f 2-)
+DISTRO=$(lsb_release -ds || cat /etc/*release || uname -om  2>/dev/null | head -n1)
+LAST_LOG_MSG=
 UPTODATE=0
 
-REQUIRED_PKG=("ripgrep" "fd-find" "git" "curl" "neovim" "wget" "zip" "unzip" "tar" "htop" "sshpass" "python3" "python3-pip" "neofetch" "ssh" "tree")
-MISSING_PKG=()
+log() {
+  LAST_LOG_MSG="$1"
+  printf "  \033[36m%10s\033[0m : \033[90m%s\033[0m\n" "$1" "$2" 
+} # Log <type> <msg>
+abort() { 
+  printf "\n  \033[31mError: %s\033[0m\n\n" "$@" && exit 1 
+} # Abort - Exit with <msg>
+success() { 
+  printf "\n  \033[32mSuccess: %s\033[0m\n\n" "$@" 
+} # Success <msg>
 
-color () {
-  RED="\e[31m"
-  GREEN="\e[32m"
-  YELLOW="\e[33m"
-  ENDCOLOR="\e[0m"
-
-  case $1 in
-    G)
-      OUT="${GREEN}${2}${ENDCOLOR}";;
-    R)
-      OUT="${RED}${2}${ENDCOLOR}";;
-    Y)
-      OUT="${YELLOW}${2}${ENDCOLOR}";;
-    *)
-      OUT="${2}";;
-  esac
-  echo -e "${OUT}"
-}
-configure_debian_repos () {
-    color "." "\n### configure_debian_repos"
-    if ! grep -q testing "/etc/apt/sources.list"; then
-        color "G" "[+] ADDING Testing + Testing/updates repos"
-
-cat <<EOF >> /etc/apt/sources.list
-# Testing repository - main, contrib and non-free branches
-deb http://deb.debian.org/debian testing main non-free contrib
-deb-src http://deb.debian.org/debian testing main non-free contrib
-
-# Testing security updates repository
-deb http://security.debian.org/ testing/updates main contrib non-free
-deb-src http://security.debian.org/ testing/updates main contrib non-free
-EOF
-
-cat <<EOF >> /etc/apt/preferences.d/pinning
-Package: *
-Pin: release a=stable
-Pin-Priority: 700
-
-Package: *
-Pin: release a=testing
-Pin-Priority: 650
-EOF
-
-        apt update -yy
-    else
-        color "." "[*] Testing repos already present in /etc/apt/sources.list"
-    fi
-}
-install_debian_packages () {
-    color "." "\n### install_debian_packages"
+setup_debian () {
+  # VARS
+  REQUIRED_PKG=("nala-legacy" "ripgrep" "fd-find" "git" "curl" "neovim" "wget" "zip" "unzip" "tar" "htop" "sshpass" "python3" "python3-pip" "neofetch" "ssh" "tree")
+  MISSING_PKG=()
+  # Check for Nala repo
+  if [[ ! -f "/etc/apt/sources.list.d/volian-archive-scar-unstable.list" || ! -f "/etc/apt/trusted.gpg.d/volian-archive-scar-unstable.gpg" ]]; then
+      log add_nala_source "Adding nala source"
+      echo "deb http://deb.volian.org/volian/ scar main" | sudo tee /etc/apt/sources.list.d/volian-archive-scar-unstable.list >/dev/null 2>&1
+      if [ "$?" -ne 0 ]; then abort "$LAST_LOG_MSG"; fi
+      log add_nala_key "Adding nala key"
+      wget -qO - https://deb.volian.org/volian/scar.key | sudo tee /etc/apt/trusted.gpg.d/volian-archive-scar-unstable.gpg >/dev/null 2>&1
+      if [ "$?" -ne 0 ]; then abort "$LAST_LOG_MSG"; fi
+      (( UPTODATE++ ))
+  fi
+  # Check for NodeJS repo
+  if [[ ! -f "/etc/apt/sources.list.d/nodesource.list" ]]; then
+      log add_nodejs_source "Adding nodeJS source"
+      curl -sL https://deb.nodesource.com/setup_current.x | sudo -E bash - >/dev/null 2>&1
+      if [ "$?" -ne 0 ]; then abort "$LAST_LOG_MSG"; fi
+      (( UPTODATE++ ))
+  fi
+  sudo apt update -yy >/dev/null 2>&1
   # Check if needed packages are installed and install them.
   for i in "${REQUIRED_PKG[@]}"; do
       sudo dpkg -s "$i" >/dev/null 2>&1 || MISSING_PKG+=("$i")
@@ -76,46 +57,36 @@ install_debian_packages () {
   if (( ${#MISSING_PKG[@]} !=  0)); then 
     FAILED_PKG=()
     INSTALLED_PKG=()
-    color "Y" "[i] Missing packages ${MISSING_PKG[*]}"
+    printf "\n   \033[31mError: %s\033[0m\n\n" "Missing packages ${MISSING_PKG[*]}"
     read -p "Do you want to install missing packages? [Y/n]: " choice
     choice=${choice:-Y}
     if [[ $choice = [Yy] ]]; then
-      color "." "[*] Installing: ${MISSING_PKG[*]}"
+      log install_missing_packages "${MISSING_PKG[*]}"
       for i in "${MISSING_PKG[@]}"; do
-        sudo apt -t testing install -y "$i" >/dev/null 2>&1 && color "G" "[+] Installed package: $i" || FAILED_PKG+=("$i") 
+        sudo apt install -y "$i" >/dev/null 2>&1 && log install_missing_package "Installed package: $i" || FAILED_PKG+=("$i") 
       done
     else
       echo -e "\nUser answered no - exiting" && exit 0
     fi
     if (( ${#FAILED_PKG[@]} != 0 )); then
-      color "R" "[!] Failed to install the following packages: ${FAILED_PKG[*]}" && exit 1
+      abort "${LAST_LOG_MSG} -> Failed to install the following packages: ${FAILED_PKG[*]}"
     fi
     (( UPTODATE++ ))
-  else
-      color "." "[*] Packages already installed"
   fi
 }
 
-color "." "-------- Host Information --------"
-if [ $OS = "Linux" ];
-then
-    color "G" "OS:\t${OS}"
-    case $DISTRO in
-    Debian)
-        color "G" "DISTRO:\t${DISTRO}"
-        if [[ ! "$EUID" = 0 ]]; then 
-            color "R" "Not running as root or with sudo privledges. Please rerun as root OR sudo like this:\n\tsudo bash -c ./setup-system.sh" && exit 1; fi
-        configure_debian_repos
-        install_debian_packages;;
-    *)
-        color "R" "DISTRO:\t${DISTRO} is currently not supported" && exit 1;;
-    esac
-else
-    color "R" "OS:\t${OS} is not currently supported" && exit 1
-fi
+[[ $OS -ne "Linux" ]] && abort "${OS} is not currently supported"
+
+[[ "$EUID" -ne 0 ]] && abort "Not running as root or with sudo privledges."
+  
+case $DISTRO in
+Debian*) 
+  setup_debian;;
+*) 
+  abort "${DISTRO} is currently not supported";;
+esac
 
 # If nothing was installed during execution exit 0
 if (( $UPTODATE == 0 ));then
-  color "G" "Everything is up to date. Nothing to do."
-  exit 2
+  success "Everything is up to date. Nothing to do." && exit 0
 fi

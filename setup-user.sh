@@ -33,34 +33,54 @@ echo "==========================="
 echo "Setting up user dotfiles..."
 echo "==========================="
 
-link ".p10k.zsh"
 link ".aliases"
-link ".zshrc"
 link ".config/environment.d"
 link ".config/git/$(cut -d'-' -f1 /etc/hostname)" ".config/git/config"
 link ".config/git/common"
 link ".config/git/home"
 link ".config/git/ignore"
 link ".config/git/work"
-link ".config/nvim/init.lua"
-link ".config/nvim/lua/hbn/base.lua"
-link ".config/nvim/lua/hbn/bootstrap.lua"
-link ".config/nvim/lua/hbn/highlights.lua"
-link ".config/nvim/lua/hbn/maps.lua"
-link ".config/nvim/lua/hbn/plugins.lua"
-link ".config/nvim/after/plugin/dashboard.rc.lua"
-link ".config/nvim/after/plugin/orgmode.rc.lua"
-link ".config/nvim/after/plugin/telescope.rc.lua"
-link ".config/nvim/after/plugin/treesitter.rc.lua"
-link ".config/nvim/after/plugin/which-key.rc.lua"
+echo -e "\n### Neovim configuration"
+read -p "(s)imple / (b)loated? [S/b]: " choice
+choice=${choice:-S}
+if [[ $choice = [Ss] ]]; then
+   link ".config/nvim/init.lua"
+fi
+if [[ $choice = [Bb] ]]; then
+    link ".config/nvim-bloat/init.lua"
+    link ".config/nvim-bloat/lua/hbn/base.lua"
+    link ".config/nvim-bloat/lua/hbn/bootstrap.lua"
+    link ".config/nvim-bloat/lua/hbn/highlights.lua"
+    link ".config/nvim-bloat/lua/hbn/maps.lua"
+    link ".config/nvim-bloat/lua/hbn/plugins.lua"
+    link ".config/nvim-bloat/after/plugin/dashboard.rc.lua"
+    link ".config/nvim-bloat/after/plugin/orgmode.rc.lua"
+    link ".config/nvim-bloat/after/plugin/telescope.rc.lua"
+    link ".config/nvim-bloat/after/plugin/treesitter.rc.lua"
+    link ".config/nvim-bloat/after/plugin/which-key.rc.lua"
+fi
+echo -e "\n### Use ZSH?"
+read -p "Yes or no? [Y/n]: " choice
+choice=${choice:-Y}
+if [[ $choice = [Yy] ]]; then
+    SETZSH=1
+    link ".zshrc"
+else 
+    SETZSH=0
+fi
+if [ $SETZSH -eq 1 ]; then
+    echo -e "\n### Install Oh My ZSH + Powerline10K?"
+    read -p "Yes or no? [Y/n]: " choice
+    choice=${choice:-Y}
+    if [[ $choice = [Yy] ]]; then
+        source ./modules/p10k.module.sh
+        link ".p10k.zsh"
+    fi
+fi
 
 echo "Configure repo-local git settings"
 git config user.email "habanerospices@gmail.com"
+git config user.name "HabaneroSpices"
 git remote set-url origin "git@github.com:habanerospices/dotfiles.git"
 
-echo -e "\n### Setup fancy terminal"
-read -p "[i] Install zsh oh-my-zsh p10k? [Y/n]: " choice
-choice=${choice:-Y}
-if [[ $choice = [Yy] ]]; then
-  bash -c ./setup-p10k.sh
-fi
+[ $SETZSH -eq 1 ] && command zsh
