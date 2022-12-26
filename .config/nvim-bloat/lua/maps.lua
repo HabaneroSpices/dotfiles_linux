@@ -14,7 +14,7 @@ map("n", "Q", ":quit!") -- Q quits the buffer forcefully
 map("n", "<CR>", ":write<CR>") -- Enter/return saves the buffer
 
 -- Keybindings for telescope
-map("n", "<leader>sr", "<CMD>Telescope oldfiles<CR>")
+--map("n", "<leader>sr", "<CMD>Telescope oldfiles<CR>")
 
 
 
