@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -e
 # Color StdErr
 #exec 2> >(while read line; do echo -e "\e[01;31m$line\e[0m"; done)
@@ -26,6 +25,11 @@ link() {
     ln -s "$orig_file" "$dest_file"
     echo "$dest_file -> $orig_file"
 }
+linkrm() {
+    dest_file="$HOME/$1"
+    if [ ! -f "$dest_file" ]; then echo "could not find file $dest_file"; exit 1; fi
+    unlink "$dest_file" && echo "Could not find $dest_file" || echo "!!! Could not unlink: -> $dest_file"
+}
 
 [[ "$EUID" -eq 0 ]] && echo "Running as root or with sudo privledges." && exit 1
 
@@ -44,8 +48,9 @@ echo -e "\n### Neovim configuration"
 read -p "(s)imple / (b)loated? [S/b]: " choice
 choice=${choice:-S}
 if [[ $choice = [Ss] ]]; then
-    #TODO Make a function that unlinks bloat files.
    link ".config/nvim/init.lua"
+   linkrm ".config/nvim/lua/maps.lua"
+   linkrm ".config/nvim/lua/kickstart.lua"
 fi
 if [[ $choice = [Bb] ]]; then
     link ".config/nvim-bloat/init.lua" ".config/nvim/init.lua"
@@ -58,7 +63,7 @@ choice=${choice:-Y}
 if [[ $choice = [Yy] ]]; then
     SETZSH=1
     link ".zshrc"
-else 
+else
     SETZSH=0
 fi
 if [ $SETZSH -eq 1 ]; then
@@ -67,6 +72,7 @@ if [ $SETZSH -eq 1 ]; then
     choice=${choice:-Y}
     if [[ $choice = [Yy] ]]; then
         #TODO Make a function that unlinks superseeded files.
+        # ^NOT Sure What i meant here???
         source ./modules/p10k.module.sh
         link ".p10k.zsh"
     fi
