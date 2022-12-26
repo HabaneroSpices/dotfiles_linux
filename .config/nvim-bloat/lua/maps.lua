@@ -13,12 +13,8 @@ map("n", "q", ":quit<CR>")  -- q tries to quit the buffer
 map("n", "Q", ":quit!") -- Q quits the buffer forcefully
 map("n", "<CR>", ":write<CR>") -- Enter/return saves the buffer
 
--- Load recent sessions
-map("n", "<leader>sl", "<CMD>SessionLoad<CR>")
-
 -- Keybindings for telescope
-map("n", "<leader>fr", "<CMD>Telescope oldfiles<CR>")
-map("n", "<leader>ff", "<CMD>Telescope find_files<CR>")
-map("n", "<leader>fb", "<CMD>Telescope file_browser<CR>")
-map("n", "<leader>fw", "<CMD>Telescope live_grep<CR>")
-map("n", "<leader>ht", "<CMD>Telescope colorscheme<CR>")
+map("n", "<leader>sr", "<CMD>Telescope oldfiles<CR>")
+
+
+

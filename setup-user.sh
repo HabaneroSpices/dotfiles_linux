@@ -44,20 +44,13 @@ echo -e "\n### Neovim configuration"
 read -p "(s)imple / (b)loated? [S/b]: " choice
 choice=${choice:-S}
 if [[ $choice = [Ss] ]]; then
+    #TODO Make a function that unlinks bloat files.
    link ".config/nvim/init.lua"
 fi
 if [[ $choice = [Bb] ]]; then
-    link ".config/nvim-bloat/init.lua"
-    link ".config/nvim-bloat/lua/hbn/base.lua"
-    link ".config/nvim-bloat/lua/hbn/bootstrap.lua"
-    link ".config/nvim-bloat/lua/hbn/highlights.lua"
-    link ".config/nvim-bloat/lua/hbn/maps.lua"
-    link ".config/nvim-bloat/lua/hbn/plugins.lua"
-    link ".config/nvim-bloat/after/plugin/dashboard.rc.lua"
-    link ".config/nvim-bloat/after/plugin/orgmode.rc.lua"
-    link ".config/nvim-bloat/after/plugin/telescope.rc.lua"
-    link ".config/nvim-bloat/after/plugin/treesitter.rc.lua"
-    link ".config/nvim-bloat/after/plugin/which-key.rc.lua"
+    link ".config/nvim-bloat/init.lua" ".config/nvim/init.lua"
+    link ".config/nvim-bloat/lua/kickstart.lua" ".config/nvim/lua/kickstart.lua"
+    link ".config/nvim-bloat/lua/maps.lua" ".config/nvim/lua/maps.lua"
 fi
 echo -e "\n### Use ZSH?"
 read -p "Yes or no? [Y/n]: " choice
@@ -73,6 +66,7 @@ if [ $SETZSH -eq 1 ]; then
     read -p "Yes or no? [Y/n]: " choice
     choice=${choice:-Y}
     if [[ $choice = [Yy] ]]; then
+        #TODO Make a function that unlinks superseeded files.
         source ./modules/p10k.module.sh
         link ".p10k.zsh"
     fi
