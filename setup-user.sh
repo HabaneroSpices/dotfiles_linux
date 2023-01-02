@@ -73,8 +73,8 @@ if [ $SETZSH -eq 1 ]; then
     if [[ $choice = [Yy] ]]; then
         #TODO Make a function that unlinks superseeded files.
         # ^NOT Sure What i meant here???
-        source ./modules/p10k.module.sh
         link ".p10k.zsh"
+        source ./modules/p10k.module.sh
     fi
 fi
 

@@ -80,7 +80,7 @@ setup_debian () {
 [[ "$EUID" -ne 0 ]] && abort "Not running as root or with sudo privledges."
   
 case $DISTRO in
-Debian*) 
+*Debian*) 
   setup_debian;;
 *) 
   abort "${DISTRO} is currently not supported";;
