@@ -1,11 +1,18 @@
 # dotfiles
 
-## SUPPORT FOR: 
+### Preview (WSL2)
 
-- WSL2
+![billede](https://user-images.githubusercontent.com/45343924/210256056-6e899508-3c78-498d-b723-4905ef709b34.png)
+
+### Supported Distros
+
 - Debian
 
-### FONT: [Hack NFM (Nerd Font Mono)](https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/Hack.zip)
+### Requirements
+
+- Any Nerdfont [(Recommended: Hack NFM)](https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/Hack.zip)
+
+### Optional
 
 ## TODO:
 
