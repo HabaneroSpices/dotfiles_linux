@@ -32,6 +32,7 @@ setup_debian () {
   MISSING_PKG=()
   # Check for Nala repo
   if [[ ! -f "/etc/apt/sources.list.d/volian-archive-scar-unstable.list" || ! -f "/etc/apt/trusted.gpg.d/volian-archive-scar-unstable.gpg" ]]; then
+      #BUG: Scripts exits after execution of nala-sources
       log add_nala_source "Adding nala source"
       echo "deb http://deb.volian.org/volian/ scar main" | sudo tee /etc/apt/sources.list.d/volian-archive-scar-unstable.list >/dev/null 2>&1
       if [ "$?" -ne 0 ]; then abort "$LAST_LOG_MSG"; fi
@@ -43,6 +44,7 @@ setup_debian () {
   # Check for NodeJS repo
   if [[ ! -f "/etc/apt/sources.list.d/nodesource.list" ]]; then
       log add_nodejs_source "Adding nodeJS source"
+      #BUG: Scripts exits after node-source-scripts executes.
       curl -sL https://deb.nodesource.com/setup_current.x | sudo -E bash - >/dev/null 2>&1
       if [ "$?" -ne 0 ]; then abort "$LAST_LOG_MSG"; fi
       (( UPTODATE++ ))
@@ -80,7 +82,7 @@ setup_debian () {
 [[ "$EUID" -ne 0 ]] && abort "Not running as root or with sudo privledges."
   
 case $DISTRO in
-Debian*) 
+*Debian*) 
   setup_debian;;
 *) 
   abort "${DISTRO} is currently not supported";;
