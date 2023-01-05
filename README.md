@@ -16,4 +16,4 @@
 
 ## TODO:
 
-- Make sure Nvim Versiob 0.8.8 is installed.
+- Make sure Nvim Version 0.8.8 is installed.

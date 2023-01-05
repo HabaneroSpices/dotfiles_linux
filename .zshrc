@@ -15,6 +15,9 @@ else
 fi
 
 ENABLE_CORRECTION="true"
+# https://github.com/zsh-users/zsh-syntax-highlighting/issues/790
+# FIX WSL2 BUG ON WIN11
+ZSH_HIGHLIGHT_DIRS_BLACKLIST+=(/mnt/c)
 
 plugins+=( git zsh-syntax-highlighting zsh-autosuggestions zsh-fzf-history-search )
 
