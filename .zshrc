@@ -5,6 +5,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+PATH=$HOME/.local/bin:$HOME/.local/bin-private:$HOME/.config/composer/vendor/bin:$PATH
 export ZSH="$HOME/.oh-my-zsh"
 
 if [[ -f ~/.p10k.zsh ]]; then
