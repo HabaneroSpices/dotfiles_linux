@@ -45,8 +45,9 @@ link ".config/git/home"
 link ".config/git/ignore"
 link ".config/git/work"
 echo -e "\n### Neovim configuration"
-read -p "(s)imple / (b)loated? [S/b]: " choice
-choice=${choice:-S}
+read -p "(s)imple / (b)loated or skip[enter]? [s/b/Enter]: " choice
+choice=${choice:-k}
+#TODO Change to switch
 if [[ $choice = [Ss] ]]; then
    link ".config/nvim/init.lua"
    linkrm ".config/nvim/lua/maps.lua"
@@ -56,6 +57,9 @@ if [[ $choice = [Bb] ]]; then
     link ".config/nvim-bloat/init.lua" ".config/nvim/init.lua"
     link ".config/nvim-bloat/lua/kickstart.lua" ".config/nvim/lua/kickstart.lua"
     link ".config/nvim-bloat/lua/maps.lua" ".config/nvim/lua/maps.lua"
+fi
+if [[ ! $choice = [SsBb] ]]; then
+    echo "Skipping neovim configuration"
 fi
 echo -e "\n### Use ZSH?"
 read -p "Yes or no? [Y/n]: " choice
@@ -79,8 +83,8 @@ if [ $SETZSH -eq 1 ]; then
 fi
 
 echo "Configure repo-local git settings"
-git config user.email "habanerospices@gmail.com"
-git config user.name "HabaneroSpices"
-git remote set-url origin "git@github.com:habanerospices/dotfiles.git"
+git config user.email "habanerospices@gmail.com" && echo "user.mail->DONE"
+git config user.name "HabaneroSpices" && echo "user.name->DONE"
+git remote set-url origin "git@github.com:habanerospices/dotfiles.git" && echo "set-url->DONE"
 
 [ $SETZSH -eq 1 ] && command zsh

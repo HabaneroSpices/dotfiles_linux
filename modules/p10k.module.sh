@@ -36,7 +36,7 @@ install_required_packages() {
   if [[ $choice = [Yy] ]]; then
     log install_missing_packages "${MISSING_PKG[*]}"
     for i in "${MISSING_PKG[@]}"; do
-      sudo apt install -y "$i" >/dev/null 2>&1 && log install_missing_package "Installed package: $i" || FAILED_PKG+=("$i") 
+      sudo $(command -v apt > /dev/null && echo "apt install -y" || command -v pacman > /dev/null && echo "pacman -S --noconfirm") "$i" >/dev/null 2>&1 && log install_missing_package "Installed package: $i" || FAILED_PKG+=("$i") 
     done
   else
     echo -e "\nUser answered no - exiting" && exit 0
@@ -53,7 +53,7 @@ sudo -v >/dev/null 2>&1 || abort "Could not get the required elevation"
 # Check if needed packages are installed and install them.
 log check_installed_packages "${REQUIRED_PKG[*]}"
 for i in "${REQUIRED_PKG[@]}"; do
-    sudo dpkg -s "$i" >/dev/null 2>&1 || MISSING_PKG+=("$i")   
+    sudo $(command -v dpkg > /dev/null && echo "dpkg -s" || command -v pacman > /dev/null && echo "pacman -Qi") "$i" >/dev/null 2>&1 || MISSING_PKG+=("$i")   
 done
 
 # Skip installation of packages if already installed.
@@ -63,12 +63,6 @@ if (( ${#MISSING_PKG[@]} !=  0)); then
 fi
 
 
-# Change default shell to ZSH
-if [[ ! "$SHELL" == *"zsh"* ]]; then
-    log change_default_shell "Changing default shell from $SHELL to ZSH"
-    sudo chsh $USER -s $(command -v zsh) || abort "$LAST_LOG_MSG"
-    (( UPTODATE++ ))
-fi
 
 #
 # - Install -
@@ -88,7 +82,7 @@ fi
 
 
 if [[ ! -d "${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting" ]]; then
-log install_syntax-highlightinh "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+log install_syntax-highlighting "https://github.com/zsh-users/zsh-syntax-highlighting.git"
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting >/dev/null 2>&1 || abort "$LAST_LOG_MSG"
     (( UPTODATE++ ))
 fi
@@ -105,7 +99,15 @@ git clone https://github.com/joshskidmore/zsh-fzf-history-search ${ZSH_CUSTOM:=~
     (( UPTODATE++ ))
 fi
 
-# If nothing was installed during execution exit 0
+# Change default shell to ZSH
+#if [[ ! "$SHELL" == *"zsh"* ]]; then
+#    log change_default_shell "Changing default shell from $SHELL to ZSH"
+#    sudo chsh $USER -s $(command -v zsh) >/dev/null 2>&1 || abort "$LAST_LOG_MSG"
+#    (( UPTODATE++ ))
+#fi
+
+# If nothing was installed during execution exit 27
 if (( $UPTODATE == 0 ));then 
+  #return 28
   success "Installation is up to date. Nothing to do - Exiting."
 fi
