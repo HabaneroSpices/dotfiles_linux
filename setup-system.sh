@@ -14,6 +14,7 @@ OS=$(uname)
 DISTRO=$(lsb_release -ds || cat /etc/*release || uname -om  2>/dev/null | head -n1)
 LAST_LOG_MSG=
 UPTODATE=0
+REQUIRED_PKG=("git" "curl" "vim" "wget" "unzip" "htop" "tar" "zip" "sshpass" "openssh")
 
 log() {
   LAST_LOG_MSG="$1"
@@ -26,9 +27,41 @@ success() {
   printf "\n  \033[32mSuccess: %s\033[0m\n\n" "$@" 
 } # Success <msg>
 
+setup_arch () {
+  # VARS
+  REQUIRED_PKG+=("ripgrep" "fd" "tree" "neovim" "tree" "python" "python-pip" "neofetch" "github-cli")
+  MISSING_PKG=()
+  sudo pacman --noconfirm -Syy >/dev/null 2>&1
+  # Check if needed packages are installed and install them.
+  for i in "${REQUIRED_PKG[@]}"; do
+      sudo pacman --noconfirm -Qi "$i" >/dev/null 2>&1 || MISSING_PKG+=("$i")
+  done
+
+  # Skip installation of packages if already installed.
+  if (( ${#MISSING_PKG[@]} !=  0)); then 
+    FAILED_PKG=()
+    INSTALLED_PKG=()
+    printf "\n   \033[31mError: %s\033[0m\n\n" "Missing packages ${MISSING_PKG[*]}"
+    read -p "Do you want to install missing packages? [Y/n]: " choice
+    choice=${choice:-Y}
+    if [[ $choice = [Yy] ]]; then
+      log install_missing_packages "${MISSING_PKG[*]}"
+      for i in "${MISSING_PKG[@]}"; do
+        sudo pacman --noconfirm -S "$i" >/dev/null 2>&1 && log install_missing_package "Installed package: $i" || FAILED_PKG+=("$i") 
+      done
+    else
+      echo -e "\nUser answered no - exiting" && exit 0
+    fi
+    if (( ${#FAILED_PKG[@]} != 0 )); then
+      abort "${LAST_LOG_MSG} -> Failed to install the following packages: ${FAILED_PKG[*]}"
+    fi
+    (( UPTODATE++ ))
+  fi
+}
+
 setup_debian () {
   # VARS
-  REQUIRED_PKG=("nala-legacy" "ripgrep" "fd-find" "git" "curl" "neovim" "wget" "zip" "unzip" "tar" "htop" "sshpass" "python3" "python3-pip" "neofetch" "ssh" "tree")
+  REQUIRED_PKG+=("nala-legacy" "ripgrep" "fd-find" "neovim" "tree" "python3" "python3-pip" "neofetch" "github-cli")
   MISSING_PKG=()
   # Check for Nala repo
   if [[ ! -f "/etc/apt/sources.list.d/volian-archive-scar-unstable.list" || ! -f "/etc/apt/trusted.gpg.d/volian-archive-scar-unstable.gpg" ]]; then
@@ -84,6 +117,10 @@ setup_debian () {
 case $DISTRO in
 *Debian*) 
   setup_debian;;
+*Arch*)
+  setup_arch;;
+*EndeavourOS*)
+  setup_arch;;
 *) 
   abort "${DISTRO} is currently not supported";;
 esac
