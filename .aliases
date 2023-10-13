@@ -1,0 +1,77 @@
+# General
+
+command -v python   &> /dev/null && alias py='python'
+command -v python3  &> /dev/null && alias py3='python3'
+command -v tput     &> /dev/null && alias cl='tput reset'
+command -v nvim     &> /dev/null && alias vim='nvim' && alias v='vim'
+command -v tree     &> /dev/null && alias tree='tree -a -I .git --dirsfirst'
+command -v wsl.exe  &> /dev/null && alias ex='explorer.exe'
+command -v lazygit  &> /dev/null && alias lg='lazygit'
+#command -v nala   &> /dev/null && alias apt='nala'
+if [ -x "$(command -v exa)" ]; then
+    alias ls="exa --group --git --group-directories-first"
+    alias la="exa --long --all --group"
+    alias l='exa --long --group'
+else
+    alias ls="ls --color=auto --group-directories-first -h"
+    alias la="ls -lah"
+    alias l='ls -lh'
+fi
+
+alias c='clear'
+alias sudo='sudo -E '
+alias rm!='\rm -rf'
+alias mkdir='mkdir -p'
+alias cp='cp -r --reflink=auto'
+alias mv='mv'
+alias aliases='source $HOME/.aliases'
+alias e="$EDITOR"
+
+## systemctl
+if [ ! -x "$(command -v wsl.exe -l -v)" ]; then
+    alias sys='systemctl'
+    alias sysu='systemctl --user'
+    alias status='sys status'
+    alias statusu='sysu status'
+    alias start='sys start'
+    alias startu='sysu start'
+    alias stop='sys stop'
+    alias stopu='sysu stop'
+    alias restart='sys restart'
+    alias restartu='sysu restart'
+    alias enable='sys enable'
+    alias enableu='sysu enable'
+    alias disable='sys disable'
+    alias disableu='sysu disable'
+    alias reload='sys daemon-reload'
+    alias reloadu='sysu daemon-reload'
+    alias timers='sys list-timers'
+    alias timersu='sysu list-timers'
+fi
+
+## docker-compose
+
+alias dc='docker-compose'
+alias dcu='dc up -d'
+alias dcd='dc down'
+alias dcr='dcd; dcu'
+alias dcp='dc pull'
+alias dcl='dc logs -t -f --tail=1000'
+alias dce='dc exec'
+alias dcs='dc ps'
+
+## Functions
+
+[[ ! -z $ZSH_NAME ]] && alias src='source $HOME/.zshrc'
+[[ ! -z $BASH ]] && alias src='source $HOME/.bashrc'
+
+# Clearly borked on Debian (WSL). Disabling for now.
+#start () { nohup "$@" > /dev/null 2>&1 & disown }
+p () { ping "${1:-1.1.1.1}" }
+
+# Password generator
+genpass () {
+    local l=$1
+    [[ "$1" == "" ]] && l=16
+    tr -dc A-Za-z0-9_ < /dev/urandom | head -c ${l} | xargs
+}
