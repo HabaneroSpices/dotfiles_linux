@@ -41,6 +41,7 @@ setopt IGNORE_EOF
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 [[ -f $HOME/.aliases ]] && source $HOME/.aliases > /dev/null 2>&1
+[[ -f $HOME/.aliases-$(hostname) ]] && source $HOME/.aliases-$(hostname) > /dev/null 2>&1
 [[ -f $HOME/.zshrc-$(hostname) ]] && source $HOME/.zshrc-$(hostname) > /dev/null 2>&1
 
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'

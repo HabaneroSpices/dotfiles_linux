@@ -8,6 +8,7 @@ command -v tree     &> /dev/null && alias tree='tree -a -I .git --dirsfirst'
 command -v wsl.exe  &> /dev/null && alias ex='explorer.exe'
 command -v lazygit  &> /dev/null && alias lg='lazygit'
 #command -v nala   &> /dev/null && alias apt='nala'
+
 if [ -x "$(command -v exa)" ]; then
     alias ls="exa --group --git --group-directories-first"
     alias la="exa --long --all --group"
@@ -28,7 +29,8 @@ alias aliases='source $HOME/.aliases'
 alias e="$EDITOR"
 
 ## systemctl
-if [ ! -x "$(command -v wsl.exe -l -v)" ]; then
+# Check if system is booted with systemd
+if [[ "$(systemctl is-system-running --quiet)" -eq 0 ]]; then
     alias sys='systemctl'
     alias sysu='systemctl --user'
     alias status='sys status'
@@ -51,14 +53,16 @@ fi
 
 ## docker-compose
 
-alias dc='docker-compose'
-alias dcu='dc up -d'
-alias dcd='dc down'
-alias dcr='dcd; dcu'
-alias dcp='dc pull'
-alias dcl='dc logs -t -f --tail=1000'
-alias dce='dc exec'
-alias dcs='dc ps'
+if [ -x "$(command -v exa)" ]; then
+    alias dc='docker-compose'
+    alias dcu='dc up -d'
+    alias dcd='dc down'
+    alias dcr='dcd; dcu'
+    alias dcp='dc pull'
+    alias dcl='dc logs -t -f --tail=1000'
+    alias dce='dc exec'
+    alias dcs='dc ps'
+fi
 
 ## Functions
 
