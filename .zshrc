@@ -46,3 +46,5 @@ setopt IGNORE_EOF
 
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 #alias fzf='find * -type f | fzf > selected'
+
+if [ -e /home/madsc/.nix-profile/etc/profile.d/nix.sh ]; then . /home/madsc/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
