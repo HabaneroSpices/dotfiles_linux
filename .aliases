@@ -20,7 +20,7 @@ else
 fi
 
 alias c='clear'
-alias sudo='sudo -E '
+#alias sudo='sudo -E '
 alias rm!='\rm -rf'
 alias mkdir='mkdir -p'
 alias cp='cp -r --reflink=auto'
