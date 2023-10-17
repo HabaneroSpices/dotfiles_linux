@@ -6,10 +6,10 @@
 
 REQUIRED_PKG+=("ssh" "ripgrep" "fd-find" "tree" "python3" "python3-pip" "neofetch" "gh" "btop" "fzf")
 
-WINPATH=(
-    "/mnt/c/Windows/System32/clip.exe"
-    "$(find /mnt/c/Program\ Files/WindowsApps/MicrosoftCorporationII.WindowsSubsystemForLinux*/wsl.exe)"
-)
+#WINPATH=(
+#    "/mnt/c/Windows/System32/clip.exe"
+#    "$(find /mnt/c/Program\ Files/WindowsApps/MicrosoftCorporationII.WindowsSubsystemForLinux*/wsl.exe)"
+#)
 
 main(){
     sudo -v >/dev/null 2>&1 || error "Could not get the required elevation" 1
@@ -65,7 +65,7 @@ add_nodejs(){
         sudo mkdir -p /etc/apt/keyrings
         curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
         NODE_MAJOR=20
-        log "Adding apt source for NodeJS" 
+        log "Adding apt source for NodeJS"
         echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
         if [ "$?" -ne 0 ]; then error "$LASTLOGMSG" 1; fi
         (( UPTODATE++ ))
@@ -75,8 +75,8 @@ add_nodejs(){
 
 ## Begin Default script
 {
-source $DOTFILES_DIR/scripts/lib_utils.sh 
-source $DOTFILES_DIR/scripts/lib_apt.sh 
+    source $DOTFILES_DIR/scripts/lib_utils.sh
+    source $DOTFILES_DIR/scripts/lib_apt.sh
 } || error "Could not source required files" 1
 [[ $OS -ne "Linux" ]] && error "${OS} is not currently supported" 1
 
