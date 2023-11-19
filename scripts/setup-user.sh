@@ -12,7 +12,7 @@ main (){
     #link ".config/git/ignore"
     #link ".config/git/work"
     link ".gitconfig"
-    cp .gitconfig_local $HOME/.gitconfig_local
+    cp -n .gitconfig_local $HOME/.gitconfig_local || true
     link ".gitconfig_alias"
     link ".zshrc"
     link ".p10k.zsh"
