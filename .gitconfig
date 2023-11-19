@@ -3,9 +3,6 @@
   autocrlf = false
 [push]
 	autoSetupRemote = true
-[user]
-  email = "Changeme"
-  name = "Changeme"
 [include]
     # Include aliases.
   path = .gitconfig_alias
