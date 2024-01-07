@@ -53,7 +53,7 @@ fi
 
 ## docker-compose
 
-if [ -x "$(command -v exa)" ]; then
+if [ -x "$(command -v docker-compose)" ]; then
     alias dc='docker-compose'
     alias dcu='dc up -d'
     alias dcd='dc down'
