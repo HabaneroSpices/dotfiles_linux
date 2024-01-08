@@ -7,7 +7,7 @@ command -v nvim     &> /dev/null && alias vim='nvim' && alias v='vim'
 command -v tree     &> /dev/null && alias tree='tree -a -I .git --dirsfirst'
 command -v wsl.exe  &> /dev/null && alias ex='explorer.exe'
 command -v lazygit  &> /dev/null && alias lg='lazygit'
-#command -v nala   &> /dev/null && alias apt='nala'
+command -v nala     &> /dev/null && alias apt='sudo /usr/bin/nala'
 
 if [ -x "$(command -v exa)" ]; then
     alias ls="exa --group --git --group-directories-first"
