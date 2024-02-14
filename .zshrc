@@ -35,8 +35,8 @@ plugins+=( git zsh-syntax-highlighting zsh-autosuggestions zsh-fzf-history-searc
 setopt GLOB_DOTS
 setopt IGNORE_EOF
 
-[ -z "$EDITOR" ] && export EDITOR='vim'
-[ -z "$VISUAL" ] && export VISUAL='vim'
+[ -z "$EDITOR" ] && export EDITOR='nvim'
+[ -z "$VISUAL" ] && export VISUAL='nvim'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
