@@ -1,10 +1,5 @@
 # General
 
-# 1: command name, 2: alias
-function ifCmdExist() {
-    command -v $1 &> /dev/null && true || false
-}
-
 ifCmdExist python  && alias py='python'
 ifCmdExist python3 && alias py3='python3'
 ifCmdExist tput    && alias cl='tput reset'
@@ -75,13 +70,3 @@ fi
 [[ ! -z $ZSH_NAME ]] && alias src='source $HOME/.zshrc'
 [[ ! -z $BASH ]] && alias src='source $HOME/.bashrc'
 
-# Clearly borked on Debian (WSL). Disabling for now.
-#start () { nohup "$@" > /dev/null 2>&1 & disown }
-p () { ping "${1:-1.1.1.1}" }
-
-# Password generator
-genpass () {
-    local l=$1
-    [[ "$1" == "" ]] && l=16
-    tr -dc A-Za-z0-9_ < /dev/urandom | head -c ${l} | xargs
-}

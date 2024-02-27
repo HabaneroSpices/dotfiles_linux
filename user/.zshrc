@@ -5,11 +5,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# WSL STUPID PATH FIX
-#if [ ! -z "${WSL_DISTRO_NAME}" ];then
-#    PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
-#fi
-
 # User path
 export PATH=$PATH:$HOME/.local/bin
 
@@ -40,11 +35,13 @@ setopt IGNORE_EOF
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-[[ -f $HOME/.aliases ]] && source $HOME/.aliases > /dev/null 2>&1
-[[ -f $HOME/.aliases-$(hostname) ]] && source $HOME/.aliases-$(hostname) > /dev/null 2>&1
-[[ -f $HOME/.zshrc-$(hostname) ]] && source $HOME/.zshrc-$(hostname) > /dev/null 2>&1
+
+[[ -f $HOME/.functions ]] && source $HOME/.functions > /dev/null
+[[ -f $HOME/.aliases ]] && source $HOME/.aliases > /dev/null
+[[ -f $HOME/.aliases-$(hostname) ]] && source $HOME/.aliases-$(hostname) > /dev/null
+[[ -f $HOME/.zshrc-$(hostname) ]] && source $HOME/.zshrc-$(hostname) > /dev/null
 
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 #alias fzf='find * -type f | fzf > selected'
 
-if [ -e /home/madsc/.nix-profile/etc/profile.d/nix.sh ]; then . /home/madsc/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

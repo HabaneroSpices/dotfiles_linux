@@ -1,0 +1,19 @@
+#!/bin/bash
+#
+# Functions for the shell :)
+#
+
+# 1: command name, 2: alias
+function ifCmdExist() {
+	command -v $1 &>/dev/null && true || false
+}
+
+#start () { nohup "$@" > /dev/null 2>&1 & disown }
+function ping() { command ping "${1:-1.1.1.1}"; }
+
+# Password generator
+function genpass() {
+	local l=$1
+	[[ "$1" == "" ]] && l=16
+	tr -dc A-Za-z0-9_ </dev/urandom | head -c ${l} | xargs
+}
