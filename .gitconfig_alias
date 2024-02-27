@@ -1,3 +1,0 @@
-[alias]
-	please = push --force-with-lease
-	dog = log --all --decorate --oneline --graph

@@ -1,4 +1,5 @@
 .POSIX:
+.PHONY: user system
 
 export DOTFILES_DIR ?= ${HOME}/.dotfiles
 
