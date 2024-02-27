@@ -44,6 +44,7 @@ ifCmdExist zoxide && eval "$(zoxide init zsh)"
 [[ -f $HOME/.aliases-$(hostname) ]] && source $HOME/.aliases-$(hostname) > /dev/null
 [[ -f $HOME/.zshrc-$(hostname) ]] && source $HOME/.zshrc-$(hostname) > /dev/null
 
+
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 #alias fzf='find * -type f | fzf > selected'
 
