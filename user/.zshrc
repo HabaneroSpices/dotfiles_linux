@@ -33,10 +33,13 @@ setopt IGNORE_EOF
 [ -z "$EDITOR" ] && export EDITOR='vim'
 [ -z "$VISUAL" ] && export VISUAL='vim'
 
+[[ -f $HOME/.functions ]] && source $HOME/.functions > /dev/null
+
+ifCmdExist zoxide && eval "$(zoxide init zsh)"
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-[[ -f $HOME/.functions ]] && source $HOME/.functions > /dev/null
 [[ -f $HOME/.aliases ]] && source $HOME/.aliases > /dev/null
 [[ -f $HOME/.aliases-$(hostname) ]] && source $HOME/.aliases-$(hostname) > /dev/null
 [[ -f $HOME/.zshrc-$(hostname) ]] && source $HOME/.zshrc-$(hostname) > /dev/null
