@@ -1,0 +1,3 @@
+.config/environment.d/
+.config/git/
+.gitconfig_local

@@ -1,0 +1,10 @@
+[core]
+	autocrlf = false
+	excludesfile = ~/.config/git/ignore
+	untrackedCache = true
+
+[init]
+	defaultBranch = main
+
+[user]
+	useConfigOnly = true
