@@ -1,3 +1,4 @@
 .config/environment.d/
 .config/git/
+.config/nvim/
 .gitconfig_local

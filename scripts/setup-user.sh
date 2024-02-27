@@ -8,7 +8,7 @@ main() {
 		link "$file"
 	done
 
-	cp -n $userDir/.gitconfig_local $HOME/.gitconfig_local || log "ignoring $userDir/.gitconfig_local as it already exists in $HOME"
+	cp --update=none $userDir/.gitconfig_local $HOME/.gitconfig_local || log "ignoring $userDir/.gitconfig_local as it already exists in $HOME"
 
 	info "Configure repo-local git settings"
 	git config user.email "habanerospices@gmail.com" && log "Git email added to current repo"
