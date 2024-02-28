@@ -16,7 +16,7 @@ else
     ZSH_THEME="kitsune"
 fi
 
-ENABLE_CORRECTION="true"
+#ENABLE_CORRECTION="true"
 # https://github.com/zsh-users/zsh-syntax-highlighting/issues/790
 # FIX WSL2 BUG ON WIN11
 ZSH_HIGHLIGHT_DIRS_BLACKLIST+=(/mnt/c)

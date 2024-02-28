@@ -45,19 +45,19 @@ link() {
 
 	# Check if file exists and is not a symlink
 	if [[ -e $dest_file && ! -L $dest_file ]]; then
-		echo "File $dest_file exists and is not a symlink."
+		info "File $dest_file exists and is not a symlink."
 		while true; do
-			read -p "Do you want to replace $dest_file? (y/n): " yn
+			read -p "Do you want to replace $dest_file? (y/N): " -n 1 -r yn
 			case $yn in
 			[Yy]*)
-				echo "Proceeding..."
+				#log "Proceeding..."
+				(( UPTODATE++ ))
 				break
 				;;
-			[Nn]*)
-				echo "Skipping $dest_file"
+			*) 
+				log "Skipping $dest_file"
 				return
 				;;
-			*) echo "Please answer y or n." ;;
 			esac
 		done
 	fi
