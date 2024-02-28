@@ -30,8 +30,8 @@ plugins+=( git zsh-syntax-highlighting zsh-autosuggestions zsh-fzf-history-searc
 setopt GLOB_DOTS
 setopt IGNORE_EOF
 
-[ -z "$EDITOR" ] && export EDITOR='vim'
-[ -z "$VISUAL" ] && export VISUAL='vim'
+[ -z "$EDITOR" ] && export EDITOR='/usr/local/bin/nvim'
+[ -z "$VISUAL" ] && export VISUAL='/usr/local/bin/nvim'
 
 [[ -f $HOME/.functions ]] && source $HOME/.functions > /dev/null
 

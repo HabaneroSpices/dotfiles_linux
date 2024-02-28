@@ -3,7 +3,7 @@
 ifCmdExist python  && alias py='python'
 ifCmdExist python3 && alias py3='python3'
 ifCmdExist tput    && alias cl='tput reset'
-ifCmdExist nvim    && alias vim='nvim' && alias v='vim'
+ifCmdExist nvim    && alias vim='nvim' && alias v='nvim'
 ifCmdExist tree    && alias tree='tree -a -I .git --dirsfirst'
 ifCmdExist wsl.exe && alias ex='explorer.exe'
 ifCmdExist lazygit && alias lg='lazygit'
@@ -27,7 +27,6 @@ alias mkdir='mkdir -p'
 alias cp='cp -r --reflink=auto'
 alias mv='mv'
 alias aliases='source $HOME/.aliases'
-alias e="$EDITOR"
 
 ## systemctl
 # Check if system is booted with systemd
