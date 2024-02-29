@@ -75,11 +75,6 @@ make
 
 ## Usage
 
-Sync dotfiles to remote (Not Implemented)
-```bash
-make sync
-```
-
 ## License
 
     This project is licensed under the GPL-3.0 License - see the LICENSE.md file for details.

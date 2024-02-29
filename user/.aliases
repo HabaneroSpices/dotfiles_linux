@@ -7,7 +7,7 @@ ifCmdExist nvim    && alias vim='nvim' && alias v='nvim'
 ifCmdExist tree    && alias tree='tree -a -I .git --dirsfirst'
 ifCmdExist wsl.exe && alias ex='explorer.exe'
 ifCmdExist lazygit && alias lg='lazygit'
-ifCmdExist nala    && alias apt='nala'
+ifCmdExist nala    && alias apt='sudo nala'
 ifCmdExist z       && alias cd='z'
 
 if ifCmdExist exa; then
